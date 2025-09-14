@@ -118,24 +118,36 @@
     <script>
         // Data mapping environments to recommended tints, with a primary and secondary ranking
         const recommendations = {
-            'Sunny': { primary: 'Grey', secondary: 'Brown', description: 'Reduces light evenly without color distortion. Great for general, bright-light use.' },
-            'Night': { primary: 'Clear', secondary: null, description: 'Provides eye protection from wind or debris without any tint.' },
-            'Dawn/Dusk': { primary: 'Yellow', secondary: 'Rose/Red', description: 'Enhances contrast and depth perception in low-light conditions.'},
-            'Forest': { primary: 'Brown', secondary: 'Green', description: 'Enhances contrast and depth perception, making greens and browns stand out.' },
-            'Bare Trees': { primary: 'Brown', secondary: 'Yellow', description: 'Improves contrast in low-light conditions and helps with depth perception by highlighting grays and browns.' },
-            'Dense Greenery': { primary: 'Green', secondary: 'Brown', description: 'Provides a balanced view, reducing glare and eye strain in lush, dense environments.' },
-            'Foliage': { primary: 'Brown', secondary: 'Green', description: 'Increases contrast to make details in yellows and oranges more discernible, especially on the forest floor.' },
-            'Snow': { primary: 'Rose/Red', secondary: 'Brown', description: 'Blocks blue light and provides high contrast to help you see contours on snow.' },
-            'Glacial': { primary: 'Glacial-Tint', secondary: 'Rose/Red', description: 'A specialized, very dark polarized lens (5% VLT) for extreme glare on snow and ice. Not suitable for driving.' },
-            'Driving': { primary: 'Grey', secondary: 'Brown', description: 'Reduces glare from roads and provides true color vision for recognizing traffic and emergency lights. Also enhances contrast to spot animals like deer.' },
-            'Fog/Haze': { primary: 'Yellow', secondary: null, description: 'Significantly improves contrast and visibility in foggy or hazy conditions.' },
-            'Rain': { primary: 'Yellow', secondary: 'Clear', description: 'Enhances contrast and depth perception, making objects more visible and providing protection from raindrops.'},
-            'Fishing': { primary: 'Brown', secondary: 'Grey', description: 'Filters blue light to improve contrast and help you spot fish beneath the water\'s surface.' },
-            'Skiing': { primary: 'Rose/Red', secondary: 'Yellow', description: 'Maximizes contrast and visual clarity, especially on overcast days.' },
-            'Golfing': { primary: 'Green', secondary: 'Brown', description: 'Enhances contrast against green backgrounds, making it easier to track the ball.' },
-            'Hiking': { primary: 'Brown', secondary: 'Rose/Red', description: 'A versatile tint that enhances contrast and depth perception, perfect for varied terrain and light conditions.' },
-            'Beach': { primary: 'Grey', secondary: 'Brown', description: 'Reduces intense glare from sand and water while providing true color perception.' },
+            'Sunny': { primary: 'Grey', secondary: 'Brown' },
+            'Night': { primary: 'Clear', secondary: null },
+            'Dawn/Dusk': { primary: 'Yellow', secondary: 'Rose/Red' },
+            'Forest': { primary: 'Brown', secondary: 'Green' },
+            'Bare Trees': { primary: 'Brown', secondary: 'Yellow' },
+            'Dense Greenery': { primary: 'Green', secondary: 'Brown' },
+            'Foliage': { primary: 'Brown', secondary: 'Green' },
+            'Snow': { primary: 'Rose/Red', secondary: 'Brown' },
+            'Glacial': { primary: 'Glacial-Tint', secondary: 'Rose/Red' },
+            'Driving': { primary: 'Grey', secondary: 'Brown' },
+            'Fog/Haze': { primary: 'Yellow', secondary: null },
+            'Rain': { primary: 'Yellow', secondary: 'Clear' },
+            'Fishing': { primary: 'Brown', secondary: 'Grey' },
+            'Skiing': { primary: 'Rose/Red', secondary: 'Yellow' },
+            'Golfing': { primary: 'Green', secondary: 'Brown' },
+            'Hiking': { primary: 'Brown', secondary: 'Rose/Red' },
+            'Beach': { primary: 'Grey', secondary: 'Brown' },
         };
+
+        // Data mapping tint names to detailed descriptions
+        const tintDescriptions = {
+            'Grey': 'Reduces light evenly without color distortion. Great for general, bright-light use.',
+            'Brown': 'A versatile tint that enhances contrast and depth perception, bringing out reds and yellows. Excellent for visual separation on a trail.',
+            'Green': 'Provides a balanced view, reducing glare and eye strain in lush environments.',
+            'Rose/Red': 'Blocks blue light and provides high contrast, enhancing depth perception and clarity in low-light and snowy conditions.',
+            'Yellow': 'Significantly improves contrast and visibility in low-light, foggy, or hazy conditions.',
+            'Clear': 'Provides eye protection from wind or debris without any tint.',
+            'Glacial-Tint': 'A specialized, very dark polarized lens (5% VLT) for extreme glare on snow and ice. Not suitable for driving.'
+        };
+
 
         // Mapping tint names to hex colors
         const tintColors = {
@@ -188,7 +200,7 @@
             // Update primary suggestion
             if (sortedTints.length > 0) {
                 const primaryTint = sortedTints[0];
-                const primaryDescription = recommendations[selectedEnvironments.values().next().value].description;
+                const primaryDescription = tintDescriptions[primaryTint];
                 primarySuggestionBox.style.backgroundColor = tintColors[primaryTint];
                 updateTextColorClass(primarySuggestionBox, primaryTint);
                 updateTextColorClass(primaryInfo, primaryTint);
@@ -210,7 +222,7 @@
             // Update secondary suggestion
             if (sortedTints.length > 1) {
                 const secondaryTint = sortedTints[1];
-                const secondaryDescription = 'A great alternative that also works well for your selected criteria.';
+                const secondaryDescription = tintDescriptions[secondaryTint];
                 secondarySuggestionBox.style.backgroundColor = tintColors[secondaryTint];
                 updateTextColorClass(secondarySuggestionBox, secondaryTint);
                 updateTextColorClass(secondaryInfo, secondaryTint);
