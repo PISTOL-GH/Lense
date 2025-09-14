@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunglasses Lens Recommender</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .suggestion-box {
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-environment {
+            @apply relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100;
+        }
+        .btn-environment.active {
+            @apply bg-indigo-600 text-white border-indigo-600;
+        }
+        .btn-environment.active::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+            border: 1px solid #4f46e5;
+        }
+        .primary-suggestion, .secondary-suggestion {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .primary-suggestion:hover, .secondary-suggestion:hover {
+            transform: translateY(-2px);
+        }
+        .tint-color-text {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden p-6 md:p-8" style="background-color: rgba(255, 255, 255, 0.7);">
+
+        <header class="text-center mb-8">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Lense Selection</h1>
+        </header>
+
+        <div class="mb-6 py-4 border-t border-b border-gray-200">
+            <!-- Environment Selection Buttons -->
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Environment</h2>
+            <div id="environment-buttons" class="flex flex-wrap gap-3 justify-center mb-6">
+                <button data-env="Sunny" class="btn-environment">Sunny</button>
+                <button data-env="Dawn/Dusk" class="btn-environment">Dawn/Dusk</button>
+                <button data-env="Night" class="btn-environment">Night</button>
+                <button data-env="Dense Greenery" class="btn-environment">Dense Greenery</button>
+                <button data-env="Forest" class="btn-environment">Forest</button>
+                <button data-env="Bare Trees" class="btn-environment">Bare Trees</button>
+                <button data-env="Foliage" class="btn-environment">Foliage</button>
+                <button data-env="Fog/Haze" class="btn-environment">Fog/Haze</button>
+                <button data-env="Rain" class="btn-environment">Rain</button>
+                <button data-env="Snow" class="btn-environment">Snow</button>
+                <button data-env="Glacial" class="btn-environment">Glacial</button>
+            </div>
+            
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Activities</h2>
+            <div id="activities-buttons" class="flex flex-wrap gap-3 justify-center">
+                <button data-env="Driving" class="btn-environment">Driving</button>
+                <button data-env="Hiking" class="btn-environment">Hiking</button>
+                <button data-env="Golfing" class="btn-environment">Golfing</button>
+                <button data-env="Beach" class="btn-environment">Beach</button>
+                <button data-env="Fishing" class="btn-environment">Fishing</button>
+                <button data-env="Skiing" class="btn-environment">Skiing</button>
+            </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="flex justify-center mb-6">
+            <button id="clear-button" class="px-6 py-2 rounded-full bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition-colors duration-200">Clear All</button>
+        </div>
+
+
+        <div id="suggestions-container" class="space-y-4">
+
+            <!-- Primary Suggestion -->
+            <h2 class="text-base md:text-lg font-semibold text-gray-700">Primary Suggestion</h2>
+            <div id="primary-suggestion-box" class="suggestion-box primary-suggestion">
+                <div id="primary-tint-info" class="text-gray-600">
+                    <p class="text-sm">Select one or more environments to get your primary lens recommendation.</p>
+                </div>
+            </div>
+
+            <!-- Secondary Suggestion -->
+            <h2 class="text-base md:text-lg font-semibold mt-4 text-gray-700">Secondary Suggestion</h2>
+            <div id="secondary-suggestion-box" class="suggestion-box secondary-suggestion">
+                <div id="secondary-tint-info" class="text-gray-600">
+                    <p class="text-sm">Select more environments to get additional lens recommendations.</p>
+                </div>
+            </div>
+
+            <!-- All Suggestions -->
+            <div id="all-suggestions" class="suggestion-box all-suggestions hidden">
+                <h2 class="text-lg md:text-xl font-semibold text-gray-700 mb-2">All Recommendations</h2>
+                <ul id="all-tints-list" class="text-gray-600 list-disc list-inside"></ul>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <script>
+        // Data mapping environments to recommended tints, with a primary and secondary ranking
+        const recommendations = {
+            'Sunny': { primary: 'Grey', secondary: 'Brown', description: 'Reduces light evenly without color distortion. Great for general, bright-light use.' },
+            'Night': { primary: 'Clear', secondary: null, description: 'Provides eye protection from wind or debris without any tint.' },
+            'Dawn/Dusk': { primary: 'Yellow', secondary: 'Rose/Red', description: 'Enhances contrast and depth perception in low-light conditions.'},
+            'Forest': { primary: 'Brown', secondary: 'Green', description: 'Enhances contrast and depth perception, making greens and browns stand out.' },
+            'Bare Trees': { primary: 'Brown', secondary: 'Yellow', description: 'Improves contrast in low-light conditions and helps with depth perception by highlighting grays and browns.' },
+            'Dense Greenery': { primary: 'Green', secondary: 'Brown', description: 'Provides a balanced view, reducing glare and eye strain in lush, dense environments.' },
+            'Foliage': { primary: 'Brown', secondary: 'Green', description: 'Increases contrast to make details in yellows and oranges more discernible, especially on the forest floor.' },
+            'Snow': { primary: 'Rose/Red', secondary: 'Brown', description: 'Blocks blue light and provides high contrast to help you see contours on snow.' },
+            'Glacial': { primary: 'Glacial-Tint', secondary: 'Rose/Red', description: 'A specialized, very dark polarized lens (5% VLT) for extreme glare on snow and ice. Not suitable for driving.' },
+            'Driving': { primary: 'Grey', secondary: 'Brown', description: 'Reduces glare from roads and provides true color vision for recognizing traffic and emergency lights. Also enhances contrast to spot animals like deer.' },
+            'Fog/Haze': { primary: 'Yellow', secondary: null, description: 'Significantly improves contrast and visibility in foggy or hazy conditions.' },
+            'Rain': { primary: 'Yellow', secondary: 'Clear', description: 'Enhances contrast and depth perception, making objects more visible and providing protection from raindrops.'},
+            'Fishing': { primary: 'Brown', secondary: 'Grey', description: 'Filters blue light to improve contrast and help you spot fish beneath the water\'s surface.' },
+            'Skiing': { primary: 'Rose/Red', secondary: 'Yellow', description: 'Maximizes contrast and visual clarity, especially on overcast days.' },
+            'Golfing': { primary: 'Green', secondary: 'Brown', description: 'Enhances contrast against green backgrounds, making it easier to track the ball.' },
+            'Hiking': { primary: 'Brown', secondary: 'Rose/Red', description: 'A versatile tint that enhances contrast and depth perception, perfect for varied terrain and light conditions.' },
+            'Beach': { primary: 'Grey', secondary: 'Brown', description: 'Reduces intense glare from sand and water while providing true color perception.' },
+        };
+
+        // Mapping tint names to hex colors
+        const tintColors = {
+            'Grey': '#6b7280',
+            'Brown': '#a0522d',
+            'Green': '#047857',
+            'Rose/Red': '#e11d48',
+            'Yellow': '#facc15',
+            'Clear': '#9ca3af',
+            'Glacial-Tint': '#2c2c2c'
+        };
+
+        const environmentButtonsContainer = document.getElementById('environment-buttons');
+        const activitiesButtonsContainer = document.getElementById('activities-buttons');
+        const clearButton = document.getElementById('clear-button');
+        const primaryInfo = document.getElementById('primary-tint-info');
+        const secondaryInfo = document.getElementById('secondary-tint-info');
+        const primarySuggestionBox = document.getElementById('primary-suggestion-box');
+        const secondarySuggestionBox = document.getElementById('secondary-suggestion-box');
+
+
+        let selectedEnvironments = new Set();
+
+        function updateRecommendations() {
+            const tintScores = {};
+            selectedEnvironments.forEach(env => {
+                const rec = recommendations[env];
+                if (rec) {
+                    // Give primary suggestions a higher score to prioritize them
+                    tintScores[rec.primary] = (tintScores[rec.primary] || 0) + 2;
+                    if (rec.secondary) {
+                        tintScores[rec.secondary] = (tintScores[rec.secondary] || 0) + 1;
+                    }
+                }
+            });
+
+            const sortedTints = Object.keys(tintScores).sort((a, b) => tintScores[b] - tintScores[a]);
+
+            // Function to determine the text color based on the tint's background color
+            const getTextColor = (tint) => {
+                // Return dark gray text for light tints, and white for all others.
+                if (tint === 'Yellow' || tint === 'Clear' || tint === 'Brown' ) {
+                    return '#374151'; 
+                } else {
+                    return '#ffffff';
+                }
+            };
+            
+            // Update primary suggestion
+            if (sortedTints.length > 0) {
+                const primaryTint = sortedTints[0];
+                const primaryDescription = recommendations[selectedEnvironments.values().next().value].description;
+                primarySuggestionBox.style.backgroundColor = tintColors[primaryTint];
+                primarySuggestionBox.style.color = getTextColor(primaryTint);
+
+                primaryInfo.innerHTML = `
+                    <span class="tint-color-text">${primaryTint}</span>
+                    <p class="mt-2 text-sm">${primaryDescription}</p>
+                `;
+            } else {
+                primarySuggestionBox.style.backgroundColor = '#e5e7eb';
+                primarySuggestionBox.style.color = '#374151';
+                primaryInfo.innerHTML = '<p class="text-sm">Select one or more environments to get your primary lens recommendation.</p>';
+            }
+
+            // Update secondary suggestion
+            if (sortedTints.length > 1) {
+                const secondaryTint = sortedTints[1];
+                const secondaryDescription = 'A great alternative that also works well for your selected criteria.';
+                secondarySuggestionBox.style.backgroundColor = tintColors[secondaryTint];
+                secondarySuggestionBox.style.color = getTextColor(secondaryTint);
+
+                secondaryInfo.innerHTML = `
+                    <span class="tint-color-text">${secondaryTint}</span>
+                    <p class="mt-2 text-sm">${secondaryDescription}</p>
+                `;
+            } else {
+                secondarySuggestionBox.style.backgroundColor = '#e5e7eb';
+                secondarySuggestionBox.style.color = '#374151';
+                secondaryInfo.innerHTML = '<p class="text-sm">Select more environments to get additional lens recommendations.</p>';
+            }
+        }
+
+        environmentButtonsContainer.addEventListener('click', (e) => {
+            const button = e.target;
+            if (button.dataset.env) {
+                const env = button.dataset.env;
+                if (selectedEnvironments.has(env)) {
+                    selectedEnvironments.delete(env);
+                    button.classList.remove('active');
+                } else {
+                    selectedEnvironments.add(env);
+                    button.classList.add('active');
+                }
+                updateRecommendations();
+            }
+        });
+        
+        activitiesButtonsContainer.addEventListener('click', (e) => {
+            const button = e.target;
+            if (button.dataset.env) {
+                const env = button.dataset.env;
+                if (selectedEnvironments.has(env)) {
+                    selectedEnvironments.delete(env);
+                    button.classList.remove('active');
+                } else {
+                    selectedEnvironments.add(env);
+                    button.classList.add('active');
+                }
+                updateRecommendations();
+            }
+        });
+
+        clearButton.addEventListener('click', () => {
+            selectedEnvironments.clear();
+            document.querySelectorAll('.btn-environment').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            updateRecommendations();
+        });
+
+        // Initial update
+        updateRecommendations();
+    </script>
+</body>
+</html>
