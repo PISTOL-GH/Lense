@@ -16,12 +16,7 @@
             padding: 1.5rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .btn-environment {
-            @apply relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100;
-        }
-        .btn-environment.active {
-            @apply bg-indigo-600 text-white border-indigo-600;
-        }
+        /* The active button pseudo-element needs to be in a style block for the CDN */
         .btn-environment.active::after {
             content: '';
             position: absolute;
@@ -62,27 +57,27 @@
             <!-- Environment Selection Buttons -->
             <h2 class="text-lg font-semibold text-gray-700 mb-4">Environment</h2>
             <div id="environment-buttons" class="flex flex-wrap gap-3 justify-center mb-6">
-                <button data-env="Sunny" class="btn-environment">Sunny</button>
-                <button data-env="Dawn/Dusk" class="btn-environment">Dawn/Dusk</button>
-                <button data-env="Night" class="btn-environment">Night</button>
-                <button data-env="Dense Greenery" class="btn-environment">Dense Greenery</button>
-                <button data-env="Forest" class="btn-environment">Forest</button>
-                <button data-env="Bare Trees" class="btn-environment">Bare Trees</button>
-                <button data-env="Foliage" class="btn-environment">Foliage</button>
-                <button data-env="Fog/Haze" class="btn-environment">Fog/Haze</button>
-                <button data-env="Rain" class="btn-environment">Rain</button>
-                <button data-env="Snow" class="btn-environment">Snow</button>
-                <button data-env="Glacial" class="btn-environment">Glacial</button>
+                <button data-env="Sunny" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Sunny</button>
+                <button data-env="Dawn/Dusk" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Dawn/Dusk</button>
+                <button data-env="Night" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Night</button>
+                <button data-env="Dense Greenery" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Dense Greenery</button>
+                <button data-env="Forest" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Forest</button>
+                <button data-env="Bare Trees" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Bare Trees</button>
+                <button data-env="Foliage" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Foliage</button>
+                <button data-env="Fog/Haze" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Fog/Haze</button>
+                <button data-env="Rain" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Rain</button>
+                <button data-env="Snow" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Snow</button>
+                <button data-env="Glacial" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Glacial</button>
             </div>
             
             <h2 class="text-lg font-semibold text-gray-700 mb-4">Activities</h2>
             <div id="activities-buttons" class="flex flex-wrap gap-3 justify-center">
-                <button data-env="Driving" class="btn-environment">Driving</button>
-                <button data-env="Hiking" class="btn-environment">Hiking</button>
-                <button data-env="Golfing" class="btn-environment">Golfing</button>
-                <button data-env="Beach" class="btn-environment">Beach</button>
-                <button data-env="Fishing" class="btn-environment">Fishing</button>
-                <button data-env="Skiing" class="btn-environment">Skiing</button>
+                <button data-env="Driving" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Driving</button>
+                <button data-env="Hiking" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Hiking</button>
+                <button data-env="Golfing" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Golfing</button>
+                <button data-env="Beach" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Beach</button>
+                <button data-env="Fishing" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Fishing</button>
+                <button data-env="Skiing" class="relative bg-white text-gray-700 px-4 py-2 rounded-full border border-gray-300 font-medium transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 btn-environment">Skiing</button>
             </div>
         </div>
 
@@ -180,12 +175,13 @@
             const sortedTints = Object.keys(tintScores).sort((a, b) => tintScores[b] - tintScores[a]);
 
             // Function to determine the text color based on the tint's background color
-            const getTextColor = (tint) => {
-                // Return dark gray text for light tints, and white for all others.
-                if (tint === 'Yellow' || tint === 'Clear' || tint === 'Brown' ) {
-                    return '#374151'; 
+            const updateTextColorClass = (box, tint) => {
+                if (tint === 'Yellow' || tint === 'Clear') {
+                    box.classList.remove('text-white');
+                    box.classList.add('text-gray-700');
                 } else {
-                    return '#ffffff';
+                    box.classList.remove('text-gray-700');
+                    box.classList.add('text-white');
                 }
             };
             
@@ -194,7 +190,7 @@
                 const primaryTint = sortedTints[0];
                 const primaryDescription = recommendations[selectedEnvironments.values().next().value].description;
                 primarySuggestionBox.style.backgroundColor = tintColors[primaryTint];
-                primarySuggestionBox.style.color = getTextColor(primaryTint);
+                updateTextColorClass(primarySuggestionBox, primaryTint);
 
                 primaryInfo.innerHTML = `
                     <span class="tint-color-text">${primaryTint}</span>
@@ -202,7 +198,8 @@
                 `;
             } else {
                 primarySuggestionBox.style.backgroundColor = '#e5e7eb';
-                primarySuggestionBox.style.color = '#374151';
+                primarySuggestionBox.classList.remove('text-white');
+                primarySuggestionBox.classList.add('text-gray-700');
                 primaryInfo.innerHTML = '<p class="text-sm">Select one or more environments to get your primary lens recommendation.</p>';
             }
 
@@ -211,7 +208,7 @@
                 const secondaryTint = sortedTints[1];
                 const secondaryDescription = 'A great alternative that also works well for your selected criteria.';
                 secondarySuggestionBox.style.backgroundColor = tintColors[secondaryTint];
-                secondarySuggestionBox.style.color = getTextColor(secondaryTint);
+                updateTextColorClass(secondarySuggestionBox, secondaryTint);
 
                 secondaryInfo.innerHTML = `
                     <span class="tint-color-text">${secondaryTint}</span>
@@ -219,7 +216,8 @@
                 `;
             } else {
                 secondarySuggestionBox.style.backgroundColor = '#e5e7eb';
-                secondarySuggestionBox.style.color = '#374151';
+                secondarySuggestionBox.classList.remove('text-white');
+                secondarySuggestionBox.classList.add('text-gray-700');
                 secondaryInfo.innerHTML = '<p class="text-sm">Select more environments to get additional lens recommendations.</p>';
             }
         }
